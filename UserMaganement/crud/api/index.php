@@ -117,7 +117,7 @@ $app->put('/users/{id}', function ($req, $res, $args) use ($pdo) {
 
 # ======= Function ToDelete =======
 $app->delete('/users/{id}', function ($req, $res, $args) use ($pdo) {
-    # deleta o registro do BD e retorna o ID p verifica se a exclusão foi feita
+    # deleta o registro do BD e retorna o ID p verificar se a exclusão foi feita
     $stmt = $pdo->prepare("DELETE FROM users WHERE id = :id RETURNING id");
     $stmt->execute(['id' => $args['id']]);
     $deleted = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -132,5 +132,5 @@ $app->delete('/users/{id}', function ($req, $res, $args) use ($pdo) {
 });
 
 
-#roda a aplicação
+#Roda a aplicação
 $app->run();

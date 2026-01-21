@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
 # Avisa qual é a pasta de trabalho dentro do servidor
 WORKDIR /var/www
 
-# Copia os arquivos do Composer para o container
+# Copia todos os arquivos do Composer para o container
 COPY composer.json composer.lock* ./
 
 # Baixa e instala o Composer e as dependências do projeto

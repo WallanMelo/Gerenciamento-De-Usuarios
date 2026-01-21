@@ -1,9 +1,9 @@
 <?php
-// Verifica se estamos em ambiente Docker
+# Arquivo de Conexão com o BD
 $host = getenv('DB_HOST') ?: 'postgres';
-$db   = getenv('DB_NAME') ?: 'usermanagement';
-$user = getenv('DB_USER') ?: 'user';
-$pass = getenv('DB_PASSWORD') ?: 'passwd';
+$db   = getenv('DB_NAME') ?: 'usermanagement'; #banco de dados
+$user = getenv('DB_USER') ?: 'user'; #usuario
+$pass = getenv('DB_PASSWORD') ?: 'passwd'; #senha
 $port = '5432';
 
 try {

@@ -5,8 +5,8 @@ Este projeto é uma aplicação web completa (Fullstack) para o gerenciamento de
 ## 🛠️ Tecnologias Utilizadas
 
 * **Frontend:** HTML5, CSS3 , JavaScript e jQuery.
-* **Backend:** PHP 8.2 com **Slim Framework 4** (Seguindo a Arquitetura de API REST).
-* **Banco de Dados:** PostgreSQL 16.
+* **Backend:** PHP com **Slim Framework** (Seguindo a Arquitetura de API REST).
+* **Banco de Dados:** PostgreSQL.
 * **Infraestrutura:** Docker e Docker Compose.
 
 ## Funcionalidades
@@ -22,8 +22,8 @@ Para executar esta aplicação, você só precisa ter o **Docker** e o **Docker 
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [https://github.com/SEU_USUARIO/NOME_DO_REPOSITORIO.git](https://github.com/WallanMelo/NOME_REPOSITORIO.git)
-    cd NOME_DO_REPOSITORIO
+    git clone [https://github.com/WallanMelo/Gerenciamento-De-Usuarios](https://github.com/WallanMelo/Gerenciamento-De-Usuarios)
+    cd "Gerenciamento-De-Usuarios"
     ```
 
 2.  **Inicie os containers:**

@@ -5,7 +5,7 @@ services:
     build:
       context: .       
       dockerfile: Dockerfile # O nome do arquivo com as instruções de instalação
-    container_name: php_app # Nome do contêiner rodando
+    container_name: php_app # Nome do contêiner q está rodando
     ports:
       - "8000:8000"    #Define a porta 8000 do seu PC para a do contêiner
     depends_on:
