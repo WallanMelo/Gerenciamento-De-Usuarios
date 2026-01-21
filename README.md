@@ -22,7 +22,7 @@ Para executar esta aplicação, você só precisa ter o **Docker** e o **Docker 
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [https://github.com/WallanMelo/Gerenciamento-De-Usuarios](https://github.com/WallanMelo/Gerenciamento-De-Usuarios)
+    git clone https://github.com/WallanMelo/Gerenciamento-De-Usuarios
     cd "Gerenciamento-De-Usuarios"
     ```
 
