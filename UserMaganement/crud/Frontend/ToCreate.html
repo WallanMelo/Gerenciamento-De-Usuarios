@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">    
+    <title>Novo Usuário</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #64748b;
+            --bg: #f1f5f9;
+            --text: #1e293b;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        
+        .container { width: 100%; max-width: 450px; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { color: #1e293b; font-size: 1.8rem; margin: 0; }
+        .header p { color: var(--secondary); font-size: 0.9rem; }
+
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; color: var(--text); font-size: 0.9rem; }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        input:focus { outline: none; border-color: var(--primary); }
+
+        #salvar {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: opacity 0.2s;
+        }
+        #salvar:hover { opacity: 0.9; }
+
+        .back-link { text-decoration: none; color: var(--secondary); font-size: 0.9rem; display: block; margin-bottom: 20px; }
+        .back-link:hover { color: var(--primary); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← Voltar</a>
+        <div class="header">
+            <h1>Novo Usuário</h1>
+            <p>Preencha os dados abaixo</p>
+        </div>
+
+        <label for="nome">Nome Completo</label>
+        <input id="nome" placeholder="Ex: João Silva">
+        
+        <label for="email">E-mail</label>
+        <input id="email" placeholder="email@exemplo.com" type="email">
+        
+        <label for="telefone">Telefone</label>
+        <input id="telefone" placeholder="(00) 00000-0000">
+
+        <button id="salvar">Salvar Usuário</button>
+    </div>
+
+<script>
+$('#salvar').click(() => {
+    //pega os valores digitados nos inputs
+    const userData = {
+        nome: $('#nome').val(),
+        email: $('#email').val(),
+        telefone: $('#telefone').val()
+    };
+
+    //validar se o e-mail tem o formato valido
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    //valida os campos vazioz
+    if (!userData.nome || !userData.email || !userData.telefone) {
+        alert('Preencha todos os campos!');
+        return;
+    }
+
+    //se o formato ñ for valido printa essa emnsagem
+    if (!emailRegex.test(userData.email)) {
+        alert('Por favor, insira um e-mail válido!');
+        return;
+    }
+
+    //requisicao p criar o usuario
+    $.ajax({
+        url: '/api/users',
+        method: 'POST',
+        contentType: 'application/json', //enviando um json
+        data: JSON.stringify(userData), // converte o obj js p um txt json
+        success: function(response) {
+            alert('Usuário criado com sucesso!');
+            window.location.href = 'index.html'; // depois volta p lista
+        },
+        error: function(error) {
+            //mostra se o email for duplicado
+            const msg = error.responseJSON ? error.responseJSON.message : 'Erro ao criar usuário';
+            alert(msg);
+        }
+    });
+});
+</script>
+</body>
+</html>

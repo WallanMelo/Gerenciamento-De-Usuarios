@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">    
+    <title>Editar Usuário</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #64748b;
+            --bg: #f1f5f9;
+            --text: #1e293b;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        
+        .container { width: 100%; max-width: 450px; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { color: #1e293b; font-size: 1.8rem; margin: 0; }
+        .header p { color: var(--secondary); font-size: 0.9rem; }
+
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; color: var(--text); font-size: 0.9rem; }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        input:focus { outline: none; border-color: var(--primary); }
+
+        #atualizar {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: opacity 0.2s;
+        }
+        #atualizar:hover { opacity: 0.9; }
+
+        .back-link { text-decoration: none; color: var(--secondary); font-size: 0.9rem; display: block; margin-bottom: 20px; }
+        .back-link:hover { color: var(--primary); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="back-link">← Voltar para a lista</a>
+    
+    <div class="header">
+        <h1>Editar Usuário</h1>
+        <p>Atualize as informações do cadastro</p>
+    </div>
+
+    <div class="form-group">
+        <label>Nome Completo</label>
+        <input id="nome" placeholder="Nome do usuário">
+    </div>
+
+    <div class="form-group">
+        <label>E-mail</label>
+        <input id="email" placeholder="email@exemplo.com" type="email">
+    </div>
+
+    <div class="form-group">
+        <label>Telefone</label>
+        <input id="telefone" placeholder="(00) 00000-0000">
+    </div>
+
+    <button id="atualizar">Salvar Alterações</button>
+</div>
+
+<script>
+// pega o Id q veio na url 
+const id = new URLSearchParams(window.location.search).get('id');
+
+//se não tiver ID na url, volta p lista 
+if (!id) {
+    alert('ID não fornecido!');
+    window.location.href = 'index.html';
+}
+
+//busca as infos do usuario p preencher os campos
+$(document).ready(function() {
+    $.ajax({
+        url: `/api/users/${id}`,
+        method: 'GET',
+        success: function(user) {
+            $('#nome').val(user.nome);
+            $('#email').val(user.email);
+            $('#telefone').val(user.telefone);
+        },
+        error: function() {
+            alert('Erro ao buscar dados do usuário.');
+            window.location.href = 'index.html';
+        }
+    });
+});
+
+//envia os dados q serão alterados
+$('#atualizar').click(() => {
+    const userData = {
+        nome: $('#nome').val(),
+        email: $('#email').val(),
+        telefone: $('#telefone').val()
+    };
+
+    //validação do email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;    
+    if (!userData.nome || !userData.email || !userData.telefone) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+    }
+    if (!emailRegex.test(userData.email)) {
+        alert('Insira um formato de e-mail válido.');
+        return;
+    }
+    //faz a requisição p atualizar o usuario
+    $.ajax({
+        url: `/api/users/${id}`,
+        method: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(userData),
+        success: function(response) {
+            alert('Usuário atualizado com sucesso!');
+            window.location.href = 'index.html';
+        },
+        error: function(error) {
+            // Aqui capturamos o erro 409 (E-mail duplicado) vindo do PHP
+            const msg = error.responseJSON ? error.responseJSON.message : 'Erro ao atualizar usuário';
+            alert(msg);
+        }
+    });
+});
+</script>
+
+</body>
+</html>

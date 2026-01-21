@@ -1,0 +1,34 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: .       
+      dockerfile: Dockerfile # O nome do arquivo com as instruções de instalação
+    container_name: php_app # Nome do contêiner rodando
+    ports:
+      - "8000:8000"    #Define a porta 8000 do seu PC para a do contêiner
+    depends_on:
+      - postgres       # Garante que o banco de dados suba antes da aplicação
+    working_dir: /var/www # Define a pasta raiz dentro do contêiner
+    # Comando que inicia o servidor PHP embutido apontando para a pasta onde está a aplicação ---> crud
+    command: php -S 0.0.0.0:8000 -t crud
+
+  postgres:
+    image: postgres:16 
+    container_name: postgres_db
+    restart: always    # Reinicia o banco automaticamente se ele falhar
+    environment:       # configs do bd
+      POSTGRES_DB: usermanagement
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: passwd
+    ports:
+      - "5432:5432" 
+    volumes:
+      # garante que os dados não sumam após desligar o docker
+      - postgres_data:/var/lib/postgresql/data
+      # roda o script de criação de tabela automaticamente ao iniciar
+      - ./bd/data.sql:/docker-entrypoint-initdb.d/data.sql
+
+volumes:
+  postgres_data: #avisa qual é volume persistente para o banco
